@@ -13,6 +13,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Common.ResourceOverlays
 {
+    //See https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Common/UI/ResourceOverlay/VanillaManaOverlay.cs
     public class KenomaiciCrystalOverlays : ModResourceOverlay
     {
         // This field is used to cache vanilla assets used in the CompareAssets helper method further down in this file

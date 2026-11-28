@@ -94,8 +94,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 
             if (Projectile.OldCenter().Length > 1)
             {
-                List<ColoredVertex> ve = new List<ColoredVertex>();
-                List<ColoredVertex> ve2 = new List<ColoredVertex>();
+                List<Common.ColoredVertex> ve = new List<Common.ColoredVertex>();
+                List<Common.ColoredVertex> ve2 = new List<Common.ColoredVertex>();
 
                 for (int i = Projectile.OldCenter().Length - 1; i > 0; i--)
                 {

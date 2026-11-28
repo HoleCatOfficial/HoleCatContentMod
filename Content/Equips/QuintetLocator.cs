@@ -54,32 +54,32 @@ namespace DestroyerTest.Content.Equips
             {
                 //Thermos Glove
                 ProvidenceSpark spark1 = new(Player);
-                spark1.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.ThermosGeodePosition) * 7f, Player.Center.DirectionTo(Instance.ThermosGeodePosition).ToRotation(), Color.OrangeRed, 1f, false, 30, SparkDrawMode.Additive, 2f);
+                spark1.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.ThermosGeodePosition) * 7f, Player.Center.DirectionTo(Instance.ThermosGeodePosition).ToRotation() + MathHelper.PiOver2, Color.OrangeRed, 0.5f, false, 30, SparkDrawMode.Additive, 4f);
                 ParticleEngine.Particles.Add(spark1, PixelLayer.AboveTiles);
 
                 //Zyplon Ring
                 ProvidenceSpark spark2 = new(Player);
-                spark2.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.ZyplonGeodePosition) * 7f, Player.Center.DirectionTo(Instance.ZyplonGeodePosition).ToRotation(), Color.Blue, 1f, false, 30, SparkDrawMode.Additive, 2f);
+                spark2.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.ZyplonGeodePosition) * 7f, Player.Center.DirectionTo(Instance.ZyplonGeodePosition).ToRotation() + MathHelper.PiOver2, Color.Blue, 0.5f, false, 30, SparkDrawMode.Additive, 4f);
                 ParticleEngine.Particles.Add(spark2, PixelLayer.AboveTiles);
 
                 //Providence
                 ProvidenceSpark spark3 = new(Player);
-                spark3.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.ProvidenceGeodePosition) * 7f, Player.Center.DirectionTo(Instance.ProvidenceGeodePosition).ToRotation(), Color.Goldenrod, 1f, false, 30, SparkDrawMode.Additive, 2f);
+                spark3.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.ProvidenceGeodePosition) * 7f, Player.Center.DirectionTo(Instance.ProvidenceGeodePosition).ToRotation() + MathHelper.PiOver2, Color.Goldenrod, 0.5f, false, 30, SparkDrawMode.Additive, 4f);
                 ParticleEngine.Particles.Add(spark3, PixelLayer.AboveTiles);
 
                 //The Circle
                 ProvidenceSpark spark4 = new(Player);
-                spark4.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.CircleGeodePosition) * 7f, Player.Center.DirectionTo(Instance.CircleGeodePosition).ToRotation(), Color.Red, 1f, false, 30, SparkDrawMode.Additive, 2f);
+                spark4.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.CircleGeodePosition) * 7f, Player.Center.DirectionTo(Instance.CircleGeodePosition).ToRotation() + MathHelper.PiOver2, Color.Red, 0.5f, false, 30, SparkDrawMode.Additive, 4f);
                 ParticleEngine.Particles.Add(spark4, PixelLayer.AboveTiles);
 
                 //Heavenbleed
                 ProvidenceSpark spark5 = new(Player);
-                spark5.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.HeavenbleedGeodePosition) * 7f, Player.Center.DirectionTo(Instance.HeavenbleedGeodePosition).ToRotation(), Color.PaleGoldenrod, 1f, false, 30, SparkDrawMode.Additive, 2f);
+                spark5.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.HeavenbleedGeodePosition) * 7f, Player.Center.DirectionTo(Instance.HeavenbleedGeodePosition).ToRotation() + MathHelper.PiOver2, Color.PaleGoldenrod, 0.5f, false, 30, SparkDrawMode.Additive, 4f);
                 ParticleEngine.Particles.Add(spark5, PixelLayer.AboveTiles);
 
                 //Swirl Stone
                 ProvidenceSpark spark6 = new(Player);
-                spark6.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.SwirlStoneGeodePosition) * 7f, Player.Center.DirectionTo(Instance.SwirlStoneGeodePosition).ToRotation(), Color.SkyBlue, 1f, false, 30, SparkDrawMode.Additive, 2f);
+                spark6.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.SwirlStoneGeodePosition) * 7f, Player.Center.DirectionTo(Instance.SwirlStoneGeodePosition).ToRotation() + MathHelper.PiOver2, Color.SkyBlue, 0.5f, false, 30, SparkDrawMode.Additive, 4f);
                 ParticleEngine.Particles.Add(spark6, PixelLayer.AboveTiles);
             }
         }

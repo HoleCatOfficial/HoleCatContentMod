@@ -230,7 +230,7 @@ EchoFluid: {
 
 LifeEcho: {
 	DisplayName: Life Echo
-	Tooltip: The energy of simple creatures.
+	Tooltip: A fleeting memory from a life once lived.
 }
 
 Living_Shadow: {
@@ -725,8 +725,8 @@ IOU: {
 }
 
 SoulEdge: {
-	DisplayName: Soul Edge
-	Tooltip: A dried-out, cold sword. Listening closely to the nooks of the wood makes you the audience of the wails of lost souls.
+	DisplayName: Distant Rage
+	Tooltip: Projects a small sword illusion.
 }
 
 BiCape: {
@@ -768,8 +768,12 @@ Horizon: {
 }
 
 TrueSoulEdge: {
-	DisplayName: True Soul Edge
-	Tooltip: Shoots a phantom that slows down before stabbing into an enemy at high speed.
+	DisplayName: Possessed Claymore
+	Tooltip:
+		'''
+		Follows the mouse cursor, drawing in spirits to grow in size.
+		Hitting enemies decreases the size.
+		'''
 }
 
 Extruder: {
@@ -1767,7 +1771,7 @@ HeliciteShank: {
 }
 
 AuraThiefBreastplate: {
-	DisplayName: Aura Thief Breastplate
+	DisplayName: Hollow Walker Breastplate
 	Tooltip:
 		'''
 		7% increased Melee speed.
@@ -1777,7 +1781,7 @@ AuraThiefBreastplate: {
 }
 
 AuraThiefCuisses: {
-	DisplayName: Aura Thief Cuisses
+	DisplayName: Hollow Walker Cuisses
 	Tooltip:
 		'''
 		35% increased Run Speed.
@@ -1787,7 +1791,7 @@ AuraThiefCuisses: {
 }
 
 AuraThiefHeadgear: {
-	DisplayName: Aura Thief Headgear
+	DisplayName: Hollow Walker Headgear
 	Tooltip: Headgear of thievery and dishonor. As pale as your eyes.
 	SetBonus:
 		'''
@@ -1835,8 +1839,8 @@ WrittenPromise: {
 }
 
 AuraClaws: {
-	DisplayName: Aura Claws
-	Tooltip: The stolen dreams of the dead reap from you that which you pride yourself upon...
+	DisplayName: Faint Wings
+	Tooltip: They have a foggy appearance, and aren't quite tangible.
 }
 
 EvermoltenSteel: {
@@ -2657,7 +2661,7 @@ DetritizedPendant: {
 
 AuraThiefHeadress: {
 	Tooltip: A headress of thievery and dishonor. As pale as your eyes.
-	DisplayName: Aura Thief Headress
+	DisplayName: Hollow Walker Headress
 	SetBonus:
 		'''
 		You have a chance to create a homing vortex of spirits when using your scepter.
@@ -4845,7 +4849,7 @@ QITN: {
 	Tooltip:
 		'''
 		The wood is frozen solid.
-		Shoots weak bursts of spirits that pierce 4 times.
+		Shoots weak projections that pierce 4 times.
 		'''
 }
 
@@ -5006,19 +5010,19 @@ MarksmanGhostArtifact: {
 }
 
 SpiritArrow: {
-	DisplayName: Vital Arrow
+	DisplayName: Hushed Arrow
 	Tooltip:
 		'''
-		Imbued with the ghoulish essence of the undead.
+		It seems to emit quiet sounds, but when you listen, you hear nothing.
 		May find its best use with a certain bow...
 		'''
 }
 
 ReanimationBow: {
-	DisplayName: Bow of Possession
+	DisplayName: Bow of Silencing
 	Tooltip:
 		'''
-		Using [i:DestroyerTest/SpiritArrow] Vital Arrows allows you to infest the undead with rogue spirits, dealing area-of-effect damage to other undead.
+		Using [i:DestroyerTest/SpiritArrow] Hushed Arrows allows you to 'silence' undead enemies, dealing area-of-effect damage to other undead.
 		'The undead make wonderful peons, for their lifeless bodies are void of any meaningful resistance or consciousness.'
 		'''
 }
@@ -5915,21 +5919,21 @@ GhostBoa: {
 
 LunacyParasite: {
 	DisplayName: Lunacy Parasite
-	Tooltip: ""
+	Tooltip: Grants an additional Accessory Slot
 }
 
 Item_BloodMoonTier1MusicBox: {
-	DisplayName: Blood Moon Tier1 Music Box
+	DisplayName: Blood Moon Music Box
 	Tooltip: ""
 }
 
 Item_BloodMoonTier2MusicBox: {
-	DisplayName: Blood Moon Tier2 Music Box
+	DisplayName: Blood Moon Music Box
 	Tooltip: ""
 }
 
 Item_BloodMoonTier3MusicBox: {
-	DisplayName: Blood Moon Tier3 Music Box
+	DisplayName: Blood Moon Music Box
 	Tooltip: ""
 }
 
@@ -5938,32 +5942,36 @@ Item_GardenMusicBox: {
 	Tooltip: ""
 }
 
-MidnightMossWand: {
-	DisplayName: Midnight Moss Wand
-	Tooltip: ""
+HellDisc: {
+	DisplayName: Hell Disc
+	Tooltip:
+		'''
+		You can throw two heavy discs that home in on enemies before slamming into them.
+		Upon hit, they recoil before returning to you.
+		Right click to throw up to three miniature discs that deal 20% less damage and don't home in, but travel twice as fast.
+		All projectiles inflict hellfire. 
+		'''
 }
 
-Item_CarbonaceousShale: {
-	DisplayName: Item_ Carbonaceous Shale
-	Tooltip: ""
-}
-
-Item_CorruptCarbonaceousShale: {
-	DisplayName: Item_ Corrupt Carbonaceous Shale
-	Tooltip: ""
-}
-
-Item_CrimsonCarbonaceousShale: {
-	DisplayName: Item_ Crimson Carbonaceous Shale
-	Tooltip: ""
-}
-
-Item_HallowCarbonaceousShale: {
-	DisplayName: Item_ Hallow Carbonaceous Shale
-	Tooltip: ""
-}
-
-DarkWater: {
-	DisplayName: Dark Water
-	Tooltip: ""
+VisionOfNil: {
+	DisplayName: Vision Of Nil
+	Tooltip:
+		'''
+		Combines and enhances the effects of the [i:DestroyerTest/ShadeHeart], the [i:CalamityEntropy/ThiefsPocketwatchOfEclipse] Eclipse Pocketwatch, the [i:DestroyerTest/HematoidVisage] Hematoid Visage, and the [i:4006] Stalkers Quiver.
+		[i:DestroyerTest/ShadeHeart][i:CalamityEntropy/ThiefsPocketwatchOfEclipse] 21% increased damage 
+		[i:DestroyerTest/ShadeHeart] Attacks ignore 30 points of enemy defense.
+		[i:DestroyerTest/ShadeHeart] Grants immunity to Shimmering Flames and Void Touched.
+		[i:DestroyerTest/ShadeHeart] 17% reduced incoming damage.
+		[i:DestroyerTest/ShadeHeart] You emit light and get a pet that doesn't consume pet slots.
+		[i:DestroyerTest/ShadeHeart] When damaged you release bursts of homing Void Stars.
+		[i:DestroyerTest/ShadeHeart] Minions inflict Void Touched and have a chance to create bursts of homing Void Stars when hitting an enemy.
+		[i:DestroyerTest/ShadeHeart] Massively boosted natural life regen.
+		[i:CalamityEntropy/ThiefsPocketwatchOfEclipse] 20% increased ultimate charge rate.
+		[i:CalamityEntropy/ThiefsPocketwatchOfEclipse] 15% increased damage during a Solar Eclipse.
+		[i:DestroyerTest/HematoidVisage] Thrower and Ranged proejctiles have a chance to create bursts of homing Void Stars when hitting an enemy.
+		[i:4006] Arrows inflict Void Touched.
+		[i:4006] Reduced aggro.
+		You are surrounded by void clouds.
+		"Given tangible form, nothingness draws in all matter nearby. It can't help but do so."
+		'''
 }

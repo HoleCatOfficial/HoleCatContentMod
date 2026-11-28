@@ -9,6 +9,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -222,6 +223,7 @@ namespace DestroyerTest.Content.Equips
             Color color = lightColor * (1 - drawInfo.shadow);
             DrawData d = new DrawData(texture, pos - Main.screenPosition, texture.Frame(1, 15, 0, drawInfo.drawPlayer.wingFrame), color, 0f, new Vector2(texture.Width / 2, texture.Height / 18), 1f, drawInfo.playerEffect, 0);
             d.shader = drawInfo.drawPlayer.cWings;
+  
             drawInfo.DrawDataCache.Add(d);
         }
     }

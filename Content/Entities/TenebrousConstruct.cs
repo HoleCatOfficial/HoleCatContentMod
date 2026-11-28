@@ -535,8 +535,8 @@ namespace DestroyerTest.Content.Entities
 
 
 
-                //Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/tc4");
+                //Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/tc4");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss2");
                 //Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/TenebrousConstruct");
 
 

@@ -21,61 +21,105 @@ namespace DestroyerTest.Common.Blessings
 
     }
 
+    /*
+    __/\\\________/\\\______/\\\_        
+     _\/\\\_____/\\\//___/\\\\\\\_       
+      _\/\\\__/\\\//_____\/////\\\_      
+       _\/\\\\\\//\\\_________\/\\\_     
+        _\/\\\//_\//\\\________\/\\\_    
+         _\/\\\____\//\\\_______\/\\\_   
+          _\/\\\_____\//\\\______\/\\\_  
+           _\/\\\______\//\\\_____\/\\\_ 
+            _\///________\///______\///_  
+    https://symboldb.org/font-generator/big/
+    */
+    /// <summary>
+    /// OBSOLETE
+    /// Blessings will be reworked at a later time. This is ugly and convoluted.
+    /// </summary>
     public class PrayerPlayer : ModPlayer
     {
+        //The current blessing is made nullable (the ? on the end) because the default value of a Blessing should be null.
+        //Due to me not knowing if that actually is the case, I can't say whether or not this is a necessary maneuver
         public Blessing? CurrentBlessing = null;
 
+        //If blessing vfx are disabled in the configs, we don't run the related code.
+        //It's generally good practice to have a static instance of your config class for ease of access and centralization.
+        //Otherwise you'd need to call ModContent.GetInstance<>() every time you needed to access the configs.
         public bool VFX => DTConfig.instance.BlessingVFX;
 
         public void ApplyBlessing(Blessing IncomingBlessing)
         {
+            //Without this check, our PopupText would cause a NullReferenceException.
+            //When in doubt, put a null check on it.
             if (IncomingBlessing == null)
+            {
                 return;
+            }
 
+            //The current blessing becomes what we passed into the method.
             CurrentBlessing = IncomingBlessing;
 
+            //A good chance to demonstrate Bakery's particle setup.
+            //First, you use the constructor of your particle class.
             BlessingParticle FX = new BlessingParticle();
+
+            //Your particle class should have a method for setting up and spawning the particles.
+            //Peek at what Prepare does for a better understanding.
+            //Name it whatever youd like. Prepare is conventional for Bakery, but you can use Create or Initialize as well, as youll see in some of the other particles.
             FX.Prepare(Player.Center, Vector2.Zero, ColorLib.Soul, 0.2f, 0.01f, 2.5f, BlendState.Additive);
+
+            //ParticleEngine has 3 pools of particles that it draws with.
+            //I don't have the best understanding of it yet, but from what I could see in my investigations:
+            //ShaderParticles is for particles that use shaders when drawing. All it does is put them in ParticleRenderGroup.Shader.
+            //Particles is where most particles will go.
+            //Behind projectiles will draw behind projectiles, as the name implies. Useful for if you don't want to use a different PixelLayer.
             ParticleEngine.ShaderParticles.Add(FX);
 
+            //RadialVectorOutwardRandom is a helper method, and does exactly what it says on the tin.
             Vector2[] Vels = Opus.RadialVectorOutwardRandom(10, Player.Center, 1f);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < Vels.Length; i++)
             {
                 HallowedPallStar Star = new();
                 Star.Initialize(Player.Center, Vels[i], ColorLib.Soul, 1f);
                 ParticleEngine.ShaderParticles.Add(Star);
             }
 
-
+            //This is a bit of a jank way to setup a PopupText, but it was the way I found was easiest.
+            //Things that are structs, such as AdvancedPopupRequest, TooltipLine, or SoundStyle, can be edited in this way both when constructed and after.
             PopupText.NewText(new AdvancedPopupRequest() { Text = IncomingBlessing.BlessingMessage, Color = ColorLib.Soul, DurationInFrames = 300, Velocity = new Vector2(0, -20) }, Player.Center);
         }
 
+        //I had some kind of plans for effects when an offer was rejected. It seems they never came to pass.
         public void RejectOffer()
-        {
-
-        }
-
-        public void DisplayBlessingMessage()
         {
 
         }
 
         public override void PostUpdateMiscEffects()
         {
+            //Keep it centralized. Save yourself the headache.
             DTBlessings B = ModContent.GetInstance<DTBlessings>();
+
+            //IsABlessingActive only checks one thing. Not sure why I made it a method instead of a lambda property (EX: bool day => Main.dayTime), but it ultimately accomplishes the same goal.
             if (!IsABlessingActive())
             {
+                //ClearBuff is the easier of the two Buff Removal methods in TMod.
+                //The other one, DelBuff requires you to know which index a given buff is at. It has its use cases, but this is not among them.
                 Player.ClearBuff(ModContent.BuffType<BlessingBuff>());
                 return;
             }
             else
             {
+                //BlessingBuff is a centralized buff to keep things lightweight. I don't imagine it'll stay the same, but I have no idea what the future may hold.
                 Player.AddBuff(ModContent.BuffType<BlessingBuff>(), 20);
             }
 
             if (VFX)
             {
+                //You've probably seen a few of these before.
+                //This is a really good substitute for a long chain of if ( == ) statements.
                 switch (CurrentBlessing.ID)
                 {
                     case (BlessingID.RadiantHeart):
@@ -86,6 +130,8 @@ namespace DestroyerTest.Common.Blessings
                                 D.noGravity = true;
 
                             }
+                            //Always break your cases at the end.
+                            //Without this, Control spills between two cases, which the compiler can't make sense of,
                             break;
                         }
                     case (BlessingID.Enchanted):
@@ -134,6 +180,8 @@ namespace DestroyerTest.Common.Blessings
                                 Dust D = Player.QuickDust(DustID.JungleSpore, Main.rand.NextVector2Circular(1f, 1f), 205);
                                 D.noGravity = true;
                             }
+                            //I'll always recommend finding some way to implement the functionality yourself, as it saves you some wierd interactions with other mods.
+                            //Although, if youre doing something simple or are just starting out, setting the player flag is fine.
                             Player.flowerBoots = true;
                             break;
                         }
@@ -230,8 +278,11 @@ namespace DestroyerTest.Common.Blessings
             UpdateMana();
         }
 
+        //There are definitiely better ways of doing this than with separate switch statements.
+        //I unfortunately have not found them yet.
         public void UpdateMana()
         {
+            //This check is redundant, but better safe than sorry!
             if (!IsABlessingActive())
             {
                 return;
@@ -450,12 +501,9 @@ namespace DestroyerTest.Common.Blessings
 
     public class DTBlessings : ModSystem
     {
+        //Constant values kind of piss me off, but they have their use cases, and TECHNICALLY :nerd:, you SHOULD be making things constant if you don't plan on ever changing their value.
+        //I, for a long time, confused the functionality of const and readonly. readonly is slightly different from what it says on the tin.
         public const string CommonBM_Key = "Mods.DestroyerTest.Blessings";
-
-
-
-
-
 
         //Regen Blessings
         public static Blessing RadiantHeart;
@@ -512,8 +560,11 @@ namespace DestroyerTest.Common.Blessings
             AllBlessings.Add(b);
         }
 
+        /// AVERT YOUR EYES!!!!!!
+        /// CONSTRUCTOOOOOOOOORS!!!!!
         public override void SetStaticDefaults()
         {
+            //I GOT A GUUN!!!!
             RadiantHeart = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.LifeCrystal, BlessingID.RadiantHeart, Language.GetText($"{CommonBM_Key}.RadiantHeart.Message"), Language.GetText($"{CommonBM_Key}.RadiantHeart.Bonus"), Language.GetText($"{CommonBM_Key}.RadiantHeart.Name"));
 
             Enchanted = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.ManaCrystal, BlessingID.Enchanted, Language.GetText($"{CommonBM_Key}.Enchanted.Message"), Language.GetText($"{CommonBM_Key}.Enchanted.Bonus"), Language.GetText($"{CommonBM_Key}.Enchanted.Name"));
@@ -536,6 +587,7 @@ namespace DestroyerTest.Common.Blessings
 
             RejuvenatingWarmth = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.HellstoneBar, BlessingID.RejuvenatingWarmth, Language.GetText($"{CommonBM_Key}.RejuvenatingWarmth.Message"), Language.GetText($"{CommonBM_Key}.RejuvenatingWarmth.Bonus"), Language.GetText($"{CommonBM_Key}.RejuvenatingWarmth.Name"));
 
+            //RELOADIIING!!
             ScarletSurge = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.LifeCrystal, BlessingID.ScarletSurge, Language.GetText($"{CommonBM_Key}.ScarletSurge.Message"), Language.GetText($"{CommonBM_Key}.ScarletSurge.Bonus"), Language.GetText($"{CommonBM_Key}.ScarletSurge.Name"));
 
             Clarity = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.ManaCrystal, BlessingID.Clarity, Language.GetText($"{CommonBM_Key}.Clarity.Message"), Language.GetText($"{CommonBM_Key}.Clarity.Bonus"), Language.GetText($"{CommonBM_Key}.Clarity.Name"));
@@ -582,6 +634,8 @@ namespace DestroyerTest.Common.Blessings
             RegisterBlessing(LifeStricken);
             RegisterBlessing(FieryPassion);
             RegisterBlessing(StarScorn);
+
+            //Are you starting to understand why I hate how the blessings are currently implemented?
         }
 
         public override void Unload()
@@ -609,6 +663,7 @@ namespace DestroyerTest.Common.Blessings
             FieryPassion = null;
             StarScorn = null;
 
+            //Never hurts to clear.
             AllBlessings.Clear();
         }
 
@@ -617,6 +672,7 @@ namespace DestroyerTest.Common.Blessings
 
     public class BlessingLoader : ModSystem
     {
+        //This class is a one-off, and I only had to do this because the compiler was ignoring these two on account of using ModItems as their components.
         public override void SetStaticDefaults()
         {
             foreach (Blessing blessing in DTBlessings.AllBlessings)
@@ -633,6 +689,8 @@ namespace DestroyerTest.Common.Blessings
         }
     }
 
+    //This is also AI, but I may keep it in a different form in the future.
+    //I still am not quite sure how Blessings will be reimplemented.
     public static class BlessingID
     {
         public const short None = -1;
@@ -673,6 +731,16 @@ namespace DestroyerTest.Common.Blessings
         public string BlessingMessage = "";
         public string BlessingBonus = "";
         public short ID = BlessingID.None;
+
+        /// <summary>
+        /// Blessings, currently, consist of the following:
+        /// <br/> - An Item, known as the "offering".
+        /// <br/> - A second Item, known as the "modifier", which will always be some kind of herb. Hence the parameter is herbType.
+        /// <br/> - A PrayerID for the blessing. I hate it too, don't worry.
+        /// <br/> - A Message to display on the player when they recieve it.
+        /// <br/> - A tooltip to show in the blessing buff.
+        /// <br/> - A name to show in the blessing buff and elsewhere.
+        /// </summary>
         public Blessing(int prayerType, int herbType, int itemType, short id)
         {
             PrayerType = prayerType;
@@ -681,6 +749,15 @@ namespace DestroyerTest.Common.Blessings
             ID = id;
         }
 
+        /// <summary>
+        /// Blessings, currently, consist of the following:
+        /// <br/> - An Item, known as the "offering".
+        /// <br/> - A second Item, known as the "modifier", which will always be some kind of herb. Hence the parameter is herbType.
+        /// <br/> - A PrayerID for the blessing. I hate it too, don't worry.
+        /// <br/> - A Message to display on the player when they recieve it.
+        /// <br/> - A tooltip to show in the blessing buff.
+        /// <br/> - A name to show in the blessing buff and elsewhere.
+        /// </summary>
         public Blessing(int prayerType, int herbType, int itemType, short id, LocalizedText blessingMessage)
         {
             PrayerType = prayerType;
@@ -690,6 +767,15 @@ namespace DestroyerTest.Common.Blessings
             ID = id;
         }
 
+        /// <summary>
+        /// Blessings, currently, consist of the following:
+        /// <br/> - An Item, known as the "offering".
+        /// <br/> - A second Item, known as the "modifier", which will always be some kind of herb. Hence the parameter is herbType.
+        /// <br/> - A PrayerID for the blessing. I hate it too, don't worry.
+        /// <br/> - A Message to display on the player when they recieve it.
+        /// <br/> - A tooltip to show in the blessing buff.
+        /// <br/> - A name to show in the blessing buff and elsewhere.
+        /// </summary>
         public Blessing(int prayerType, int herbType, int itemType, short id, LocalizedText blessingMessage, LocalizedText blessingBonus)
         {
             PrayerType = prayerType;
@@ -700,6 +786,15 @@ namespace DestroyerTest.Common.Blessings
             ID = id;
         }
 
+        /// <summary>
+        /// Blessings, currently, consist of the following:
+        /// <br/> - An Item, known as the "offering".
+        /// <br/> - A second Item, known as the "modifier", which will always be some kind of herb. Hence the parameter is herbType.
+        /// <br/> - A PrayerID for the blessing. I hate it too, don't worry.
+        /// <br/> - A Message to display on the player when they recieve it.
+        /// <br/> - A tooltip to show in the blessing buff.
+        /// <br/> - A name to show in the blessing buff and elsewhere.
+        /// </summary>
         public Blessing(int prayerType, int herbType, int itemType, short id, LocalizedText blessingMessage, LocalizedText blessingBonus, LocalizedText blessingName)
         {
             PrayerType = prayerType;

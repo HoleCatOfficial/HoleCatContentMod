@@ -43,6 +43,10 @@ namespace DestroyerTest.Common
         public static bool CallOfVoidIsLoaded;
         public static Mod CallOfVoidMod;
 
+        public const string InnoVaultName = "InnoVault";
+        public static bool InnoVaultIsLoaded;
+        public static Mod InnoVaultMod;
+
 
         public static void LoadMods()
         {
@@ -102,6 +106,12 @@ namespace DestroyerTest.Common
                 CallOfVoidIsLoaded = ModLoader.TryGetMod(CallOfVoidName, out Mod callOfVoid);
                 CallOfVoidMod = callOfVoid;
             }
+
+            if (ModLoader.HasMod(InnoVaultName))
+            {
+                InnoVaultIsLoaded = ModLoader.TryGetMod(InnoVaultName, out Mod innoVault);
+                InnoVaultMod = innoVault;
+            }
         }
 
         public static void UnloadMods()
@@ -124,6 +134,8 @@ namespace DestroyerTest.Common
             WGIMod = null;
             CallOfVoidIsLoaded = false;
             CallOfVoidMod = null;
+            InnoVaultIsLoaded = false;
+            InnoVaultMod = null;
         }
 
         public static bool StealthStrike(this Projectile proj, Player Owner)
@@ -175,6 +187,19 @@ namespace DestroyerTest.Common
                 if (mod.TryFind(itemName, out ModItem item))
                 {
                     return item;
+                }
+            }
+
+            return null;
+        }
+
+        public static ModProjectile GetProjectile(Mod mod, string projName)
+        {
+            if (ModLoader.HasMod(mod.Name))
+            {
+                if (mod.TryFind(projName, out ModProjectile proj))
+                {
+                    return proj;
                 }
             }
 

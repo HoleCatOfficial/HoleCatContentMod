@@ -419,12 +419,12 @@ namespace DestroyerTest.Content.Entities
             if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DestroyerTestMod.MasochistIsActive)
             {
                 EternityAI();
-                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstEternityPlaceholder");
+                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/UnfinishedBoss2");
             }
             if (DestroyerTestMod.MasochistIsActive)
             {
                 EternityAI();
-                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstMasoPlaceholder");
+                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/UnfinishedBoss2");
             }
 
 

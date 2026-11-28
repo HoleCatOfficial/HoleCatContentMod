@@ -54,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
             if (TrailPositions.Count > 1)
             {
-                List<ColoredVertex> ve = new List<ColoredVertex>();
+                List<Common.ColoredVertex> ve = new List<Common.ColoredVertex>();
 
                 for (int i = TrailPositions.Count - 1; i > 0; i--)
                 {

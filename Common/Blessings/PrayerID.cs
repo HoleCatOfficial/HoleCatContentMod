@@ -1,5 +1,11 @@
 namespace DestroyerTest.Common.Blessings
 {
+    /// <summary>
+    /// OBSOLETE
+    /// Due to frustrations with how blessings were organized and accessed, PrayerIDs were introduced.
+    /// PrayerIDs as a concept are entirely AI, and when I reinvent this system into something else, such a thing will not exist.
+    /// K1
+    /// </summary>
     public class HerbID
     {
         public const short None = 0;

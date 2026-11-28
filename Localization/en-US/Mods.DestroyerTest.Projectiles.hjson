@@ -861,5 +861,6 @@ SpectralCharge1.DisplayName: Spectral Charge1
 SpectralCharge2.DisplayName: Spectral Charge2
 SpectralChargeExplosion.DisplayName: Spectral Charge Explosion
 TwistedSpirit.DisplayName: Twisted Spirit
-DarkWaterAura.DisplayName: Dark Water Aura
-DarkWaterThrown.DisplayName: Dark Water Thrown
+HellDiscThrown.DisplayName: Hell Disc Thrown
+HellDiscThrownAlt.DisplayName: Hell Disc Thrown Alt
+VisionOfNilPet.DisplayName: Vision Of Nil Pet

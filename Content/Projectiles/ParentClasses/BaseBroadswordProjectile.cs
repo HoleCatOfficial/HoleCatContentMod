@@ -74,9 +74,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             targetAngle = (Main.MouseWorld - Owner.MountedCenter);
             if (targetAngle == Vector2.Zero)
+            {
                 targetAngle = Vector2.UnitX * Projectile.spriteDirection;
+            }
 
-            LastSwing = Owner.direction == 1 ? -1 : -1;
+            LastSwing = Owner.direction == 1 ? -1 : 1;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -173,8 +175,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 }
 
 
-                UpPoint = targetAngle.ToRotation() - MathHelper.ToRadians(135f);
-                DownPoint = targetAngle.ToRotation() + MathHelper.ToRadians(135f);
+                UpPoint = targetAngle.ToRotation() - (MathHelper.ToRadians(135f) * Owner.direction);
+                DownPoint = targetAngle.ToRotation() + (MathHelper.ToRadians(135f) * Owner.direction);
             }
 
             if (!Owner.active || Owner.dead || Owner.noItems || Owner.CCed || !ActiveCondition)
@@ -201,7 +203,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             armPosition.Y += Owner.gfxOffY;
             Projectile.Center = armPosition;
-
+            Projectile.direction = Projectile.spriteDirection = Owner.direction;
             Owner.heldProj = Projectile.whoAmI;
         }
 
@@ -426,26 +428,30 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 if (Projectile.spriteDirection > 0)
                 {
+                    
                     FX = SpriteEffects.None;
-                    rOffset = MathHelper.ToRadians(45f);
+                    rOffset = MathHelper.ToRadians(0f);
                 }
                 else
                 {
-                    FX = SpriteEffects.None;
-                    rOffset = MathHelper.ToRadians(45f);
+                    
+                    FX = SpriteEffects.FlipHorizontally;
+                    rOffset = MathHelper.ToRadians(135f);
                 }
             }
             else
             {
                 if (Projectile.spriteDirection > 0)
                 {
+                    
                     FX = SpriteEffects.FlipHorizontally;
-                    rOffset = MathHelper.ToRadians(45f);
+                    rOffset = MathHelper.ToRadians(135f);
                 }
                 else
                 {
-                    FX = SpriteEffects.FlipHorizontally;
-                    rOffset = MathHelper.ToRadians(45f);
+                    
+                    FX = SpriteEffects.None;
+                    rOffset = MathHelper.ToRadians(0f);
                 }
             }
 
@@ -479,30 +485,34 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 if (Projectile.spriteDirection > 0)
                 {
+                    //Utils.DrawBorderString(Main.spriteBatch, "1", (Owner.Center + new Vector2(0, -90)) - Main.screenPosition, Color.Red, 1f);
                     origin = new Vector2(0, texture.Height);
                     effects = SpriteEffects.None;
                     rotationOffset = MathHelper.ToRadians(45f);
                 }
                 else
                 {
-                    origin = new Vector2(0, texture.Height);
-                    effects = SpriteEffects.None;
-                    rotationOffset = MathHelper.ToRadians(45f);
+                    //Utils.DrawBorderString(Main.spriteBatch, "2", (Owner.Center + new Vector2(0, -90)) - Main.screenPosition, Color.Red, 1f);
+                    origin = new Vector2(texture.Width, texture.Height);
+                    effects = SpriteEffects.FlipHorizontally;
+                    rotationOffset = MathHelper.ToRadians(135f);
                 }
             }
             else
             {
                 if (Projectile.spriteDirection > 0)
                 {
+                    //Utils.DrawBorderString(Main.spriteBatch, "3", (Owner.Center + new Vector2(0, -90)) - Main.screenPosition, Color.Red, 1f);
                     origin = new Vector2(texture.Width, texture.Height);
                     effects = SpriteEffects.FlipHorizontally;
                     rotationOffset = MathHelper.ToRadians(135f);
                 }
                 else
                 {
-                    origin = new Vector2(texture.Width, texture.Height);
-                    effects = SpriteEffects.FlipHorizontally;
-                    rotationOffset = MathHelper.ToRadians(135f);
+                    //Utils.DrawBorderString(Main.spriteBatch, "4", (Owner.Center + new Vector2(0, -90)) - Main.screenPosition, Color.Red, 1f);
+                    origin = new Vector2(0, texture.Height);
+                    effects = SpriteEffects.None;
+                    rotationOffset = MathHelper.ToRadians(45f);
                 }
             }
 
